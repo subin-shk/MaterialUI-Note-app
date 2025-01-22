@@ -8,6 +8,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import { useNavigate } from "react-router-dom";
 
 const classes = {
   field: {
@@ -23,6 +24,7 @@ export default function Create() {
   const [titleError, setTitleError] = useState(false);
   const [detailsError, setDetailsError] = useState(false);
   const [category, setCategory] = useState("todos");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,7 +39,11 @@ export default function Create() {
     }
 
     if (title && details) {
-      console.log(title, details, category);
+      fetch("http://localhost:8000/notes", {
+        method: "post",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ title, details, category }),
+      }).then(() => navigate("/"));
     }
   };
 
